@@ -101,7 +101,7 @@ func (eq Eq) toSql(useNotOpr bool) (sql string, args []interface{}, err error) {
 			valVal := reflect.ValueOf(val)
 			if valVal.Kind() == reflect.Array || valVal.Kind() == reflect.Slice {
 				if valVal.Len() == 0 {
-					expr = fmt.Sprintf("%s %s (NULL)", key, inOpr)
+					expr = fmt.Sprintf("%s %s [NULL]", key, inOpr)
 					if args == nil {
 						args = []interface{}{}
 					}
@@ -109,7 +109,7 @@ func (eq Eq) toSql(useNotOpr bool) (sql string, args []interface{}, err error) {
 					for i := 0; i < valVal.Len(); i++ {
 						args = append(args, valVal.Index(i).Interface())
 					}
-					expr = fmt.Sprintf("%s %s (%s)", key, inOpr, Placeholders(valVal.Len()))
+					expr = fmt.Sprintf("%s %s [%s]", key, inOpr, Placeholders(valVal.Len()))
 				}
 			} else {
 				expr = fmt.Sprintf("%s %s ?", key, equalOpr)
